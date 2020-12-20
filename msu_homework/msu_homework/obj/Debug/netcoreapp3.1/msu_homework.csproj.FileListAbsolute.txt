@@ -1,0 +1,13 @@
+C:\Users\white\source\repos\msu_homework\msu_homework\bin\Debug\netcoreapp3.1\msu_homework.exe
+C:\Users\white\source\repos\msu_homework\msu_homework\bin\Debug\netcoreapp3.1\msu_homework.deps.json
+C:\Users\white\source\repos\msu_homework\msu_homework\bin\Debug\netcoreapp3.1\msu_homework.runtimeconfig.json
+C:\Users\white\source\repos\msu_homework\msu_homework\bin\Debug\netcoreapp3.1\msu_homework.runtimeconfig.dev.json
+C:\Users\white\source\repos\msu_homework\msu_homework\bin\Debug\netcoreapp3.1\msu_homework.dll
+C:\Users\white\source\repos\msu_homework\msu_homework\bin\Debug\netcoreapp3.1\msu_homework.pdb
+C:\Users\white\source\repos\msu_homework\msu_homework\obj\Debug\netcoreapp3.1\msu_homework.csprojAssemblyReference.cache
+C:\Users\white\source\repos\msu_homework\msu_homework\obj\Debug\netcoreapp3.1\msu_homework.AssemblyInfoInputs.cache
+C:\Users\white\source\repos\msu_homework\msu_homework\obj\Debug\netcoreapp3.1\msu_homework.AssemblyInfo.cs
+C:\Users\white\source\repos\msu_homework\msu_homework\obj\Debug\netcoreapp3.1\msu_homework.csproj.CoreCompileInputs.cache
+C:\Users\white\source\repos\msu_homework\msu_homework\obj\Debug\netcoreapp3.1\msu_homework.dll
+C:\Users\white\source\repos\msu_homework\msu_homework\obj\Debug\netcoreapp3.1\msu_homework.pdb
+C:\Users\white\source\repos\msu_homework\msu_homework\obj\Debug\netcoreapp3.1\msu_homework.genruntimeconfig.cache
