@@ -1,0 +1,103 @@
+﻿<Window x:Class="SecondSemesterLab_UI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SecondSemesterLab_UI" xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="500" Width="800" 
+        Loaded="Window_Loaded"
+        Closing="Window_Closing">
+    <Window.Resources>
+        <CollectionViewSource  Source="{Binding}" x:Key="listDataOnGrid" Filter="FilterDataOnGrid"/>
+        <CollectionViewSource  Source="{Binding}" x:Key="listDataCollection" Filter="FilterDataCollection"/>
+        <local:First_converter x:Key="First"/>
+        <local:Second_converter x:Key="Second"/>
+        <local:Third_converter x:Key="Third"/>
+        <sys:Int32 x:Key="IndexFirst" >0</sys:Int32>
+        <sys:Int32 x:Key="IndexLast" >-1</sys:Int32>
+        <DataTemplate x:Key="templateDataItem">
+            <StackPanel Margin="5">
+                <TextBlock HorizontalAlignment="Left" Text="{Binding StringFormat=Комплексное значение: {0}, Converter={StaticResource First}}" />
+                <TextBlock HorizontalAlignment="Left" Text="{Binding StringFormat=Сетка: {0}, Converter={StaticResource Second}}" />
+            </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
+
+
+
+    <DockPanel>
+        <Menu Margin="0,0,0,0" HorizontalAlignment="Stretch" DockPanel.Dock="Top">
+            <MenuItem x:Name="Menu_File" Header="File" FontStyle="Normal" FontWeight="Normal" FontSize="13">
+                <MenuItem x:Name="Item_New" Header="New" Click="Item_New_Click"/>
+                <MenuItem x:Name="Item_Open" Header="Open" Click="Item_Open_Click"/>
+                <MenuItem x:Name="Item_SaveAs" Header="Save As" Click="Item_SaveAs_Click"/>
+            </MenuItem>
+            <MenuItem Header="Edit" FontStyle="Normal" FontWeight="Normal" FontSize="13">
+                <MenuItem x:Name="Item_Defaults" Header="Add Defaults" Click="Item_Defaults_Click"/>
+                <MenuItem x:Name="Item_DefaultColl" Header="Add Default V1DataCollection" Click="Item_DefaultColl_Click"/>
+                <MenuItem x:Name="Item_DefaultGrid" Header="Add Default V1DataOnGrid" Click="Item_DefaultGrid_Click"/>
+                <MenuItem x:Name="Item_AddFromFile" Header="Add Element from File" Click="Item_AddFromFile_Click"/>
+                <MenuItem x:Name="Item_Remove" Header="Remove" Click="Item_Remove_Click"/>
+            </MenuItem>
+        </Menu>
+        <Grid Grid.Row="1" Margin="5,0,5,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Label Content="Основная коллекция"/>
+                <ListBox x:Name="listBox_Main" Grid.Row="1" Margin="5,0,5,5" ItemsSource="{Binding}"/>
+                <TextBlock x:Name="textBlock_CollProp" Grid.Row="2" Margin="5,5,5,5" VerticalAlignment="Top" TextWrapping="Wrap"/>
+            </Grid>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="4*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="6*"/>
+                </Grid.RowDefinitions>
+                <Label Content="Элементы DataCollection"/>
+                <ListBox x:Name="listBox_DataCollection" Grid.Row="1" Margin="5,0,5,5" ItemsSource="{Binding Source={StaticResource listDataCollection}}"/>
+                <Label Content="Выбранная коллекция" Grid.Row="2" Margin="0,-5,-5,-5"/>
+                <ListBox x:Name="listBox_Details" Grid.Row="3" Margin="5,5,5,5" ItemsSource="{Binding ElementName=listBox_DataCollection, Path=SelectedItem}" ItemTemplate="{StaticResource templateDataItem}"/>
+            </Grid>
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="25"/>
+                </Grid.RowDefinitions>
+                <Label Content="Элементы DataOnGrid" Margin="0,0,0,0"/>
+                <ListBox x:Name="listBox_DataOnGrid" Grid.Row="1" Margin="5,0,5,5" ItemsSource="{Binding Source={StaticResource listDataOnGrid}}"/>
+                <TextBlock x:Name="textBlock_GridMin" Grid.Row="2" Margin="5,5,5,5" Text="{Binding ElementName=listBox_DataOnGrid, Path=SelectedItem, Converter={StaticResource Third}, ConverterParameter={StaticResource IndexFirst}}"/>
+                <TextBlock x:Name="textBlock_GridMax" Grid.Row="3" Margin="5,5,5,5" Text="{Binding ElementName=listBox_DataOnGrid, Path=SelectedItem, Converter={StaticResource Third}, ConverterParameter={StaticResource IndexLast}}"/>
+            </Grid>
+
+        </Grid>
+    </DockPanel>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</Window>

@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v5.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v5.0": {
+      "SecondSemesterLab_UI/1.0.0": {
+        "dependencies": {
+          "FirstSemesterLib": "1.0.0"
+        },
+        "runtime": {
+          "SecondSemesterLab_UI.dll": {}
+        }
+      },
+      "FirstSemesterLib/1.0.0": {
+        "runtime": {
+          "FirstSemesterLib.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "SecondSemesterLab_UI/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "FirstSemesterLib/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
