@@ -10,3 +10,15 @@ C:\Users\white\source\repos\ClassLibraryProjects\FirstSemesterLib\obj\Debug\net5
 C:\Users\white\source\repos\ClassLibraryProjects\FirstSemesterLib\obj\Debug\net5.0\FirstSemesterLib.dll
 C:\Users\white\source\repos\ClassLibraryProjects\FirstSemesterLib\obj\Debug\net5.0\ref\FirstSemesterLib.dll
 C:\Users\white\source\repos\ClassLibraryProjects\FirstSemesterLib\obj\Debug\net5.0\FirstSemesterLib.pdb
+E:\Users\white\source\repos\ClassLibraryProjects\FirstSemesterLib\bin\Debug\net5.0\FirstSemesterLib.deps.json
+E:\Users\white\source\repos\ClassLibraryProjects\FirstSemesterLib\bin\Debug\net5.0\FirstSemesterLib.dll
+E:\Users\white\source\repos\ClassLibraryProjects\FirstSemesterLib\bin\Debug\net5.0\ref\FirstSemesterLib.dll
+E:\Users\white\source\repos\ClassLibraryProjects\FirstSemesterLib\bin\Debug\net5.0\FirstSemesterLib.pdb
+E:\Users\white\source\repos\ClassLibraryProjects\FirstSemesterLib\obj\Debug\net5.0\FirstSemesterLib.csprojAssemblyReference.cache
+E:\Users\white\source\repos\ClassLibraryProjects\FirstSemesterLib\obj\Debug\net5.0\FirstSemesterLib.GeneratedMSBuildEditorConfig.editorconfig
+E:\Users\white\source\repos\ClassLibraryProjects\FirstSemesterLib\obj\Debug\net5.0\FirstSemesterLib.AssemblyInfoInputs.cache
+E:\Users\white\source\repos\ClassLibraryProjects\FirstSemesterLib\obj\Debug\net5.0\FirstSemesterLib.AssemblyInfo.cs
+E:\Users\white\source\repos\ClassLibraryProjects\FirstSemesterLib\obj\Debug\net5.0\FirstSemesterLib.csproj.CoreCompileInputs.cache
+E:\Users\white\source\repos\ClassLibraryProjects\FirstSemesterLib\obj\Debug\net5.0\FirstSemesterLib.dll
+E:\Users\white\source\repos\ClassLibraryProjects\FirstSemesterLib\obj\Debug\net5.0\ref\FirstSemesterLib.dll
+E:\Users\white\source\repos\ClassLibraryProjects\FirstSemesterLib\obj\Debug\net5.0\FirstSemesterLib.pdb

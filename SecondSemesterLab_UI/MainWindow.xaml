@@ -23,9 +23,6 @@
             </StackPanel>
         </DataTemplate>
     </Window.Resources>
-
-
-
     <DockPanel>
         <Menu Margin="0,0,0,0" HorizontalAlignment="Stretch" DockPanel.Dock="Top">
             <MenuItem x:Name="Menu_File" Header="File" FontStyle="Normal" FontWeight="Normal" FontSize="13">

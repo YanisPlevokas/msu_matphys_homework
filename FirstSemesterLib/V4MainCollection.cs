@@ -140,11 +140,9 @@ namespace FirstSemesterLib
 
         public void AddDefaults()
         {
-            int n = 0;
-
             Grid2D just_object = new Grid2D((float)2.1, 4, (float)2.1, 4);
             V4DataOnGrid onGrid_object = new V4DataOnGrid("hello", 2.3, just_object);
-            V4DataCollection collection_object = new V4DataCollection("hello", 2.3);
+            V4DataCollection collection_object = new V4DataCollection("hello_new", 2.3);
             int number_of_new_objects = 5;
             double minVal = 12.0;
             double maxVal = 24.0;
