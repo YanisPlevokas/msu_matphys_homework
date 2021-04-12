@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 namespace FirstSemesterLib
 {
     [Serializable]
-    public class V4DataOnGrid : V4Data, IEnumerable<DataItem>, ISerializable
+    public class V4DataOnGrid : V4Data, IEnumerable<DataItem>
     {
         public Grid2D net { get; set; }
         public Complex[,] complex_massiv { get; set; }
@@ -131,41 +131,6 @@ namespace FirstSemesterLib
                 }
             }
             return ret_obj;
-        }
-
-
-        public V4DataOnGrid(SerializationInfo info, StreamingContext context)
-        : base(info.GetString("base_measures"), info.GetDouble("base_frequency"))
-        {
-            net = (Grid2D)info.GetValue("net", typeof(Grid2D));
-            complex_massiv = new Complex[net.OX_net_counter, net.OY_net_counter];
-            int rank = complex_massiv.GetLength(0);
-            int length = complex_massiv.GetLength(1);
-            for (int i = 0; i < rank; i++)
-            {
-                for (int j = 0; j < length; j++)
-                {
-                    complex_massiv[i, j] = info.GetSingle("i_" + i.ToString() + ",j_" +j.ToString());
-                }
-            }
-        }
-
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue("base_measures", measures_info);
-            info.AddValue("base_frequency", frequency_info);
-            info.AddValue("net", net, typeof(Grid2D));
-            int rank = complex_massiv.GetLength(0);
-            int length = complex_massiv.GetLength(1);
-            for (int i = 0; i < rank; i++)
-            {
-                for (int j = 0; j < length; j++)
-                {
-                    info.AddValue("i_" + i.ToString() + ",j_" + j.ToString(), complex_massiv[i, j]);
-                }
-            }
-
-
         }
 
         public override IEnumerator<DataItem> GetEnumerator()

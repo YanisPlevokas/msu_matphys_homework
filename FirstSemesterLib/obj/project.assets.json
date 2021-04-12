@@ -8,19 +8,24 @@
     "net5.0": []
   },
   "packageFolders": {
-    "C:\\Users\\panaf\\.nuget\\packages\\": {}
+    "C:\\Users\\white\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Users\\white\\source\\repos\\ClassLibraryProjects\\FirstSemesterLib\\FirstSemesterLib.csproj",
+      "projectUniqueName": "C:\\Users\\white\\source\\repos\\ClassLibraryProjects\\FirstSemesterLib\\FirstSemesterLib.csproj",
       "projectName": "FirstSemesterLib",
-      "projectPath": "E:\\Users\\white\\source\\repos\\ClassLibraryProjects\\FirstSemesterLib\\FirstSemesterLib.csproj",
-      "packagesPath": "C:\\Users\\panaf\\.nuget\\packages\\",
-      "outputPath": "E:\\Users\\white\\source\\repos\\ClassLibraryProjects\\FirstSemesterLib\\obj\\",
+      "projectPath": "C:\\Users\\white\\source\\repos\\ClassLibraryProjects\\FirstSemesterLib\\FirstSemesterLib.csproj",
+      "packagesPath": "C:\\Users\\white\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\white\\source\\repos\\ClassLibraryProjects\\FirstSemesterLib\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\panaf\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\white\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

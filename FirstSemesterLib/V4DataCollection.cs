@@ -4,14 +4,52 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Numerics;
+using System.Runtime.Serialization;
 
 namespace FirstSemesterLib
 {
     [Serializable]
 
-    public class V4DataCollection : V4Data, IEnumerable<DataItem>
+    public class V4DataCollection : V4Data, IEnumerable<DataItem>, ISerializable
+
+
     {
         public Dictionary<Vector2, Complex> dict;
+
+        public void GetObjectData(SerializationInfo Sinfo, StreamingContext context)
+        {
+            float[] x = new float[dict.Count];
+            float[] y = new float[dict.Count];
+            Complex[] comp = new Complex[dict.Count];
+            int j = 0;
+            foreach (KeyValuePair<Vector2, Complex> KVPair in dict)
+            {
+
+                x[j] = KVPair.Key.X;
+                y[j] = KVPair.Key.Y;
+                comp[j++] = KVPair.Value;
+
+            }
+            Sinfo.AddValue("X", x);
+            Sinfo.AddValue("Y", y);
+            Sinfo.AddValue("Cval", comp);
+
+            Sinfo.AddValue("INF", MInfo);
+            Sinfo.AddValue("Fr", FInfo);
+        }
+        public V4DataCollection(SerializationInfo Sinfo, StreamingContext context) :
+            base((string)Sinfo.GetValue("INF", typeof(string)), (double)Sinfo.GetValue("Fr", typeof(double)))
+        {
+            float[] x = (float[])Sinfo.GetValue("X", typeof(float[]));
+            float[] y = (float[])Sinfo.GetValue("Y", typeof(float[]));
+            Complex[] comp = (Complex[])Sinfo.GetValue("Cval", typeof(Complex[]));
+            dict = new Dictionary<Vector2, Complex>();
+            for (int i = 0; i < x.Length; i++)
+            {
+                dict.Add(new Vector2(x[i], y[i]), comp[i]);
+            }
+
+        }
 
         public V4DataCollection(string measure, double frequency) : base(measure, frequency)
         {

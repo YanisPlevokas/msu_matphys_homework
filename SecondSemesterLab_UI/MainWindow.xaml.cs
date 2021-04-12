@@ -35,10 +35,13 @@ namespace SecondSemesterLab_UI
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = MainColl;
+            MainColl = new V4MainCollection();
         }
         private void FilterDataOnGrid(object c, FilterEventArgs e) => e.Accepted = e.Item is V4DataOnGrid;
         private void FilterDataCollection(object c, FilterEventArgs e) => e.Accepted = e.Item is V4DataCollection;
 
+        
         private void SetMainCollection(V4MainCollection coll)
         {
             if (MainColl != null)
@@ -48,7 +51,7 @@ namespace SecondSemesterLab_UI
 
             OnCollectionChange(this, null);
         }
-
+        
         private bool Save()
         {
             SaveFileDialog dialog = new SaveFileDialog();
@@ -71,6 +74,7 @@ namespace SecondSemesterLab_UI
             dialog.Filter = "dat files (*.dat)|*.dat|All files (*.*)|*.*";
             if (dialog.ShowDialog() == true)
             {
+
                 V4MainCollection coll = new V4MainCollection();
                 coll.Load(dialog.FileName);
                 SetMainCollection(coll);
@@ -81,7 +85,7 @@ namespace SecondSemesterLab_UI
 
         private bool SuggestSave()
         {
-            if (!MainColl.HasUnsavedChanges)
+            if (!MainColl.IfChangedCollection)
                 return true;
 
             string caption = "Несохранённые изменения";
@@ -108,10 +112,11 @@ namespace SecondSemesterLab_UI
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("EN-US");
-            V4MainCollection new_var = new V4MainCollection();
-            new_var.AddDefaults();
-            Console.WriteLine("HERE");
-            SetMainCollection(new_var);
+            SetMainCollection(new V4MainCollection());
+            //V4MainCollection new_var = new V4MainCollection();
+            //new_var.AddDefaults();
+            //Console.WriteLine("HERE");
+            //SetMainCollection(new_var);
         }
         private void Window_Closing(object sender, CancelEventArgs e)
         {
@@ -151,8 +156,19 @@ namespace SecondSemesterLab_UI
 
         private void Item_Defaults_Click(object sender, RoutedEventArgs e)
         {
-            MainColl.AddDefaults();
-            Console.WriteLine("WE ARE HERE");
+            if (MainColl == null)
+                MessageBox.Show("Нет объекта");
+            else
+            {
+                try { 
+                    MainColl.AddDefaults();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Add Defaults problem " + ex.Message);
+                }
+
+            }
         }
 
         private void Item_DefaultColl_Click(object sender, RoutedEventArgs e)
@@ -201,12 +217,14 @@ namespace SecondSemesterLab_UI
         }
 
 
-        private void OnCollectionChange(object sender, NotifyCollectionChangedEventArgs args)
+        
+         private void OnCollectionChange(object sender, NotifyCollectionChangedEventArgs args)
         {
             DataContext = null;
             DataContext = MainColl;
-            textBlock_CollProp.Text = "Максимальное значение длины вектора поля: " + MainColl.MaxMagn.ToString();
+            //textBlock_CollProp.Text = "Максимальное значение длины вектора поля: ";// + MainColl.MaxMagn.ToString();
         }
+        
 
     }
 }

@@ -52,7 +52,7 @@
                 </Grid.RowDefinitions>
                 <Label Content="Основная коллекция"/>
                 <ListBox x:Name="listBox_Main" Grid.Row="1" Margin="5,0,5,5" ItemsSource="{Binding}"/>
-                <TextBlock x:Name="textBlock_CollProp" Grid.Row="2" Margin="5,5,5,5" VerticalAlignment="Top" TextWrapping="Wrap"/>
+                <TextBlock x:Name="textBlock_CollProp" Grid.Row="2" Text="{Binding Path = MaxMagn, StringFormat='Max Magnitude: {0}'}" Margin="5,5,5,5" VerticalAlignment="Top" TextWrapping="Wrap"/>
             </Grid>
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>

@@ -12,18 +12,49 @@ using System.Text;
 
 namespace FirstSemesterLib
 {
-    public class V4MainCollection : IEnumerable<V4Data>, INotifyCollectionChanged
+    public class V4MainCollection : IEnumerable<V4Data>, INotifyCollectionChanged, INotifyPropertyChanged
     {
         private List<V4Data> list;
 
-
+        [field: NonSerialized]
+        public event DataChangedEventHandler DataChanged;
+        [field: NonSerialized]
+        public event PropertyChangedEventHandler PropertyChanged;
         [field: NonSerialized]
         public event NotifyCollectionChangedEventHandler CollectionChanged;
-        public bool HasUnsavedChanges { get; private set; }
+
+        public bool IfChangedCollection = false;
+
 
         private void OnChange(object sender, NotifyCollectionChangedEventArgs args)
         {
-            HasUnsavedChanges = true;
+            IfChangedCollection = true;
+            MaxMagnNew = MaxMagn;
+
+        }
+        public void OnDataChanged(object source, DataChangedEventArgs args)
+        {
+            DataChanged?.Invoke(source, args);
+
+        }
+        public void PropertyC(object sender, PropertyChangedEventArgs args)
+        {
+            OnDataChanged(this, new DataChangedEventArgs(ChangeInfo.ItemChanged, num));
+
+        }
+
+        private DataItem MaxMagnNew;
+        public DataItem MaxMagn
+        {
+            get
+            {
+                var united = list.SelectMany(x => x);
+                if (united != null && united.Any())
+                    {
+                    return united.Aggregate((max, v) => v.electromagnet_field.Magnitude > max.electromagnet_field.Magnitude ? v : max);
+                }
+                return new DataItem(new Vector2(0, 0), new Complex(0, 0));
+            }
         }
 
         public int num;
@@ -51,7 +82,12 @@ namespace FirstSemesterLib
                 fileStream = File.Open(filename, FileMode.OpenOrCreate);
                 BinaryFormatter serializer = new BinaryFormatter();
                 serializer.Serialize(fileStream, list);
-                HasUnsavedChanges = false;
+                IfChangedCollection = false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Save Problem" + ex.Message);
+
             }
             finally
             {
@@ -70,7 +106,11 @@ namespace FirstSemesterLib
                 BinaryFormatter serializer = new BinaryFormatter();
                 list = (List<V4Data>)serializer.Deserialize(fileStream);
                 CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-                HasUnsavedChanges = false;
+                IfChangedCollection = false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Load Problem" + ex.Message);
             }
             finally
             {
@@ -80,8 +120,13 @@ namespace FirstSemesterLib
         }
         public void Add(V4Data item)
         {
+            
+            item.PropertyChanged += PropertyC;
             list.Add(item);
+            num++;
             CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+            OnDataChanged(this, new DataChangedEventArgs(ChangeInfo.Add, num));
+
         }
         public bool Remove(string id, double w)
         {
@@ -90,23 +135,17 @@ namespace FirstSemesterLib
             {
                 if ((list[i].MInfo == id) && (list[i].FInfo == w))
                 {
+                    list[i].PropertyChanged -= PropertyC;
                     list.RemoveAt(i);
                     flag = true;
+                    num--;
                     CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
                 }
             }
+            if (flag)
+                OnDataChanged(this, new DataChangedEventArgs(ChangeInfo.Remove, num));
             return flag;
         }
-
-        public DataItem MaxMagn
-        {
-            get
-            {
-                var united = list.SelectMany(x => x);
-                return united.Aggregate((max, v) => v.electromagnet_field.Magnitude > max.electromagnet_field.Magnitude ? v : max);
-            }
-        }
-
 
         public IEnumerable<DataItem> Perechisl
         {
@@ -154,6 +193,7 @@ namespace FirstSemesterLib
                 collection_object.InitRandom(number_of_new_objects, (float)rnd.NextDouble(), (float)rnd.NextDouble(), minVal, maxVal);
                 list.Add(onGrid_object);
                 list.Add(collection_object);
+                CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
             }
         }
         public override string ToString()
