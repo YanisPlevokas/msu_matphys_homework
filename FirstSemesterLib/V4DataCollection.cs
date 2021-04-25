@@ -88,6 +88,7 @@ namespace FirstSemesterLib
                 dataSet = null;
                 System.Console.WriteLine("Parse error");
                 System.Console.WriteLine(e.Message);
+                throw e;
             }
             finally
             {
@@ -173,7 +174,7 @@ namespace FirstSemesterLib
 
         public override string ToString()
         {
-            return "type - V4DataCollection, " + measures_info + " - meausers info, " + frequency_info + " - frequency info, " + dict.Count + " - number of elems.\n";
+            return "type - V4DataCollection, \n" + measures_info + " - meausers info, \n" + frequency_info + " - frequency info, \n" + dict.Count + " - number of elems.\n";
         }
 
         public override IEnumerator<DataItem> GetEnumerator()

@@ -3,11 +3,25 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SecondSemesterLab_UI" xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:SecondSemesterLab_UI" 
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="800" 
+        Title="MainWindow" Height="700" Width="1000" 
         Loaded="Window_Loaded"
         Closing="Window_Closing">
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Open"
+                    Executed="OpenCommandHandler"/>
+        <CommandBinding Command="ApplicationCommands.Save"
+                    Executed="SaveCommandHandler"
+                    CanExecute="CanSaveCommandHandler"/>
+        <CommandBinding Command="ApplicationCommands.Delete"
+                    Executed="DeleteCommandHandler"
+                    CanExecute="CanDeleteCommandHandler"/>
+        <CommandBinding Command="{x:Static local:MainWindow.AddCustomCollectionCommand}"
+                    Executed="AddCustomCollectionCommandHandler"
+                    CanExecute="CanAddCustomCollectionCommandHandler"/>
+    </Window.CommandBindings>
     <Window.Resources>
         <CollectionViewSource  Source="{Binding}" x:Key="listDataOnGrid" Filter="FilterDataOnGrid"/>
         <CollectionViewSource  Source="{Binding}" x:Key="listDataCollection" Filter="FilterDataCollection"/>
@@ -22,15 +36,31 @@
                 <TextBlock HorizontalAlignment="Left" Text="{Binding StringFormat=Сетка: {0}, Converter={StaticResource Second}}" />
             </StackPanel>
         </DataTemplate>
+        <Style TargetType="TextBox">
+            <Setter Property="MinWidth" Value="50"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Margin" Value="11,1,1,1"/>
+        </Style>
+        <Style TargetType="TextBox" x:Key="ValidatingInput" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="Foreground" Value="Orange"/>
+                    <Setter Property="ToolTip" 
+                         Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)/ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <local:Second_Lab_class x:Key="CollectionBuilder" />
     </Window.Resources>
     <DockPanel>
         <Menu Margin="0,0,0,0" HorizontalAlignment="Stretch" DockPanel.Dock="Top">
             <MenuItem x:Name="Menu_File" Header="File" FontStyle="Normal" FontWeight="Normal" FontSize="13">
                 <MenuItem x:Name="Item_New" Header="New" Click="Item_New_Click"/>
-                <MenuItem x:Name="Item_Open" Header="Open" Click="Item_Open_Click"/>
-                <MenuItem x:Name="Item_SaveAs" Header="Save As" Click="Item_SaveAs_Click"/>
+                <MenuItem x:Name="Item_Open" Header="Open" Command="ApplicationCommands.Open"/>
+                <MenuItem x:Name="Item_SaveAs" Header="Save As" Command="ApplicationCommands.Save"/>
             </MenuItem>
             <MenuItem Header="Edit" FontStyle="Normal" FontWeight="Normal" FontSize="13">
+                <MenuItem x:Name="Item_AddCustomCollection" Header="Add Custom V4DataCollection" Command="{x:Static local:MainWindow.AddCustomCollectionCommand}"/>
                 <MenuItem x:Name="Item_Defaults" Header="Add Defaults" Click="Item_Defaults_Click"/>
                 <MenuItem x:Name="Item_DefaultColl" Header="Add Default V1DataCollection" Click="Item_DefaultColl_Click"/>
                 <MenuItem x:Name="Item_DefaultGrid" Header="Add Default V1DataOnGrid" Click="Item_DefaultGrid_Click"/>
@@ -38,7 +68,13 @@
                 <MenuItem x:Name="Item_Remove" Header="Remove" Click="Item_Remove_Click"/>
             </MenuItem>
         </Menu>
-        <Grid Grid.Row="1" Margin="5,0,5,5">
+        <ToolBar Margin="0,0,0,0" DockPanel.Dock="Top">
+            <Button Content="Open" Command="ApplicationCommands.Open"/>
+            <Button Content="Save" Command="ApplicationCommands.Save"/>
+            <Button Content="Add Custom" Command="{x:Static local:MainWindow.AddCustomCollectionCommand}"/>
+            <Button Content="Remove" Command="ApplicationCommands.Delete"/>
+        </ToolBar>
+        <Grid Grid.Row="2" Margin="5,0,5,5" Grid.IsSharedSizeScope="True">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -50,35 +86,71 @@
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Label Content="Основная коллекция"/>
+                <Label Content="Основная коллекция" HorizontalAlignment="Center"/>
                 <ListBox x:Name="listBox_Main" Grid.Row="1" Margin="5,0,5,5" ItemsSource="{Binding}"/>
                 <TextBlock x:Name="textBlock_CollProp" Grid.Row="2" Text="{Binding Path = MaxMagn, StringFormat='Max Magnitude: {0}'}" Margin="5,5,5,5" VerticalAlignment="Top" TextWrapping="Wrap"/>
             </Grid>
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" SharedSizeGroup="listDataGroup1"/>
+                    <RowDefinition Height="5*"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="4*"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="6*"/>
+                    <RowDefinition Height="5*"/>
                 </Grid.RowDefinitions>
-                <Label Content="Элементы DataCollection"/>
+                <Label Content="Элементы DataCollection" HorizontalAlignment="Center"/>
                 <ListBox x:Name="listBox_DataCollection" Grid.Row="1" Margin="5,0,5,5" ItemsSource="{Binding Source={StaticResource listDataCollection}}"/>
-                <Label Content="Выбранная коллекция" Grid.Row="2" Margin="0,-5,-5,-5"/>
+                <Label Content="Выбранная коллекция" Grid.Row="2" Margin="0,-5,-5,-5" HorizontalAlignment="Center"/>
                 <ListBox x:Name="listBox_Details" Grid.Row="3" Margin="5,5,5,5" ItemsSource="{Binding ElementName=listBox_DataCollection, Path=SelectedItem}" ItemTemplate="{StaticResource templateDataItem}"/>
             </Grid>
             <Grid Grid.Column="2">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" SharedSizeGroup="listDataGroup1"/>
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="25"/>
                     <RowDefinition Height="25"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Label Content="Элементы DataOnGrid" Margin="0,0,0,0"/>
-                <ListBox x:Name="listBox_DataOnGrid" Grid.Row="1" Margin="5,0,5,5" ItemsSource="{Binding Source={StaticResource listDataOnGrid}}"/>
+                <Label Content="Элементы DataOnGrid" Margin="0,0,0,0" HorizontalAlignment="Center"/>
+                <ListBox x:Name="listBox_DataOnGrid" Grid.Row="1" Margin="5,0,5,0" ItemsSource="{Binding Source={StaticResource listDataOnGrid}}"/>
                 <TextBlock x:Name="textBlock_GridMin" Grid.Row="2" Margin="5,5,5,5" Text="{Binding ElementName=listBox_DataOnGrid, Path=SelectedItem, Converter={StaticResource Third}, ConverterParameter={StaticResource IndexFirst}}"/>
                 <TextBlock x:Name="textBlock_GridMax" Grid.Row="3" Margin="5,5,5,5" Text="{Binding ElementName=listBox_DataOnGrid, Path=SelectedItem, Converter={StaticResource Third}, ConverterParameter={StaticResource IndexLast}}"/>
-            </Grid>
+                <Label Content="Создание нового DataCollection" Grid.Row="4" Margin="0,5,0,0" HorizontalAlignment="Center"/>
+                <Grid Grid.Row="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="Имя" HorizontalAlignment="Left"/>
+                    <TextBlock Grid.Row="1" Text="Количество элементов" HorizontalAlignment="Left"/>
+                    <TextBlock Grid.Row="2" Text="min" HorizontalAlignment="Left"/>
+                    <TextBlock Grid.Row="3" Text="max" HorizontalAlignment="Left"/>
+                    <TextBlock Grid.Row="4" Text="Вещественное значение" HorizontalAlignment="Left"/>
 
+                    <TextBox Grid.Row="0" Grid.Column="1" Style="{StaticResource ValidatingInput}"
+                         Text="{Binding Source={StaticResource CollectionBuilder}, Path=Name, 
+                         ValidatesOnExceptions=True, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource ValidatingInput}"
+                         Text="{Binding Source={StaticResource CollectionBuilder}, Path=Count,
+                         ValidatesOnExceptions=True, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource ValidatingInput}"
+                         Text="{Binding Source={StaticResource CollectionBuilder}, Path=MinValue,
+                         ValidatesOnExceptions=True, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox Grid.Row="3" Grid.Column="1" Style="{StaticResource ValidatingInput}"
+                         Text="{Binding Source={StaticResource CollectionBuilder}, Path=MaxValue,
+                         ValidatesOnExceptions=True, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox Grid.Row="4" Grid.Column="1" Style="{StaticResource ValidatingInput}"
+                         Text="{Binding Source={StaticResource CollectionBuilder}, Path=MInfo,
+                         ValidatesOnExceptions=True, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+            </Grid>
         </Grid>
     </DockPanel>
 

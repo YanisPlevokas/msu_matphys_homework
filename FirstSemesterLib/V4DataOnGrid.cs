@@ -96,8 +96,8 @@ namespace FirstSemesterLib
 
         public override string ToString()
         {
-            return "type - V4DataOnGrid, " + measures_info + " - meausers info, " + frequency_info + " - frequency info, " + net.OX_step + " - OX_step, " +
-                net.OX_net_counter + " - OX net counter, " + net.OY_step + " - OY_step, " + net.OY_net_counter + " - OY net counter.\n";
+            return "type - V4DataOnGrid, \n" + measures_info + " - meausers info, \n" + frequency_info + " - frequency info, \n" + net.OX_step + " - OX_step, \n" +
+                net.OX_net_counter + " - OX net counter, \n" + net.OY_step + " - OY_step, \n" + net.OY_net_counter + " - OY net counter.\n";
         }
 
         public override string ToLongString(string format)

@@ -29,7 +29,8 @@ namespace FirstSemesterLib
         private void OnChange(object sender, NotifyCollectionChangedEventArgs args)
         {
             IfChangedCollection = true;
-            MaxMagnNew = MaxMagn;
+            //MaxMagnNew = MaxMagn;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("MaxMagn"));
 
         }
         public void OnDataChanged(object source, DataChangedEventArgs args)
@@ -43,7 +44,7 @@ namespace FirstSemesterLib
 
         }
 
-        private DataItem MaxMagnNew;
+        //private DataItem MaxMagnNew;
         public DataItem MaxMagn
         {
             get
@@ -54,6 +55,11 @@ namespace FirstSemesterLib
                     return united.Aggregate((max, v) => v.electromagnet_field.Magnitude > max.electromagnet_field.Magnitude ? v : max);
                 }
                 return new DataItem(new Vector2(0, 0), new Complex(0, 0));
+            }
+            set
+            {
+                MaxMagn = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("MaxMagn"));
             }
         }
 
@@ -120,7 +126,11 @@ namespace FirstSemesterLib
         }
         public void Add(V4Data item)
         {
-            
+            if (Contains(item.MInfo))
+            {
+                throw new Exception("Object already in dataset, input some distinct params\n");
+                return;
+            }
             item.PropertyChanged += PropertyC;
             list.Add(item);
             num++;
@@ -179,14 +189,13 @@ namespace FirstSemesterLib
 
         public void AddDefaults()
         {
+            Random rnd = new Random();
             Grid2D just_object = new Grid2D((float)2.1, 4, (float)2.1, 4);
-            V4DataOnGrid onGrid_object = new V4DataOnGrid("hello", 2.3, just_object);
-            V4DataCollection collection_object = new V4DataCollection("hello_new", 2.3);
+            V4DataOnGrid onGrid_object = new V4DataOnGrid("grid" + rnd.Next().ToString(), 2.3, just_object);
+            V4DataCollection collection_object = new V4DataCollection("collection" + rnd.Next().ToString(), 2.3);
             int number_of_new_objects = 5;
             double minVal = 12.0;
             double maxVal = 24.0;
-            Random rnd = new Random();
-
             for (int i = 0; i < 1; i++)
             {
                 onGrid_object.InitRandom(minVal, maxVal);
@@ -195,6 +204,14 @@ namespace FirstSemesterLib
                 list.Add(collection_object);
                 CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
             }
+        }
+
+        public bool Contains(string id)
+        {
+            foreach (V4Data data in list)
+                if (data.MInfo == id)
+                    return true;
+            return false;
         }
         public override string ToString()
         {
